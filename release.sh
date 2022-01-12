@@ -16,13 +16,9 @@ fi
 
 git checkout -b version/$TAG
 
-find . -type f -name '*.yml' -exec sed -i '' "s/okode\/common@1/okode\/common@${TAG}/" {} +
-
 git commit -a -m"Bumped version $TAG"
 git tag $TAG -m $TAG
 
-circleci orb publish common/orb.yml okode/common@$TAG
-circleci orb publish ionic/orb.yml okode/ionic@$TAG
 circleci orb publish angular/orb.yml okode/angular@$TAG
 circleci orb publish stack/orb.yml okode/stack@$TAG
 

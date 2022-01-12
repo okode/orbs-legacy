@@ -64,17 +64,9 @@ $ ./release.sh $VERSION
 
 ## Orbs
 
-### common
-
-Common commands for building Okode projects.
-
 ### stack
 
 Build and publish fullstack applications based on Ionic and Spring Boot.
-
-### ionic
-
-Build and publish hybrid Apps based on Ionic for iOS / Android.
 
 ### angular
 
