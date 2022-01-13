@@ -16,7 +16,6 @@ fi
 
 git checkout -b version/$TAG
 
-git commit -a -m"Bumped version $TAG"
 git tag $TAG -m $TAG
 
 circleci orb publish angular/orb.yml okode/angular@$TAG
