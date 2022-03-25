@@ -10,6 +10,7 @@ cache-key-gradle: &cache-key-gradle
 orbs:
   common: okode/common@1.0.169
   node: circleci/node@4
+  slack: circleci/slack@4
 
 executors:
   java-node:
@@ -18,6 +19,14 @@ executors:
         auth:
           username: $DOCKER_LOGIN
           password: $DOCKER_PASSWORD
+
+commands:
+  notify:
+    description: Send Slack notification
+    steps:
+      - slack/notify:
+          event: fail
+          custom: "{\n\t\"blocks\": [\n\t\t{\n\t\t\t\"type\": \"section\",\n\t\t\t\"text\": {\n\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\"text\": \":red_circle: Failed: ${CIRCLE_USERNAME} workflow (${CIRCLE_JOB}) in ${CIRCLE_PROJECT_REPONAME} (${CIRCLE_BRANCH})\",\n\t\t\t\t\"emoji\": true\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"actions\",\n\t\t\t\"elements\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"button\",\n\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\"text\": \"View ${CIRCLE_PROJECT_REPONAME} ${CIRCLE_JOB} job\"\n\t\t\t\t\t},\n\t\t\t\t\t\"url\": \"${CIRCLE_BUILD_URL}\"\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}\n"
 
 jobs:
   app:
@@ -95,6 +104,7 @@ jobs:
                   - lint-results.json
                   - coverage
                   - www
+      - notify
   server:
     parameters:
       path:
@@ -151,3 +161,4 @@ jobs:
           <<: *cache-key-gradle
           paths:
             - ~/.gradle
+      - notify
