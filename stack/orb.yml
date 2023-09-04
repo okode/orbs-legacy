@@ -46,7 +46,10 @@ jobs:
       archive-name:
         type: string
         default: ""
-    executor: java-node
+      executor:
+        type: executor
+        default: java-node
+    executor: << parameters.executor >>
     working_directory: ~/project/<< parameters.path >>
     steps:
       - checkout:
